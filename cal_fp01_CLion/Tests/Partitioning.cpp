@@ -37,7 +37,7 @@ int s_dynamic(int n,int k){
         }
         cout<<"\n";
     }
-    
+
 	return table[n][k];
 }
 
