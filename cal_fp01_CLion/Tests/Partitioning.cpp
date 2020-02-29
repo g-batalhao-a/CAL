@@ -28,16 +28,14 @@ int s_dynamic(int n,int k){
         for(int j=1;j<=i;j++){
             if(j==1||i==j){
                 table[i][j]=1;
-                cout<<table[i][j]<<" ";
             }
             else{
                 table[i][j]=j*table[i-1][j]+table[i-1][j-1];
-                cout<<table[i][j]<<" ";
             }
         }
-        cout<<"\n";
-    }
 
+    }
+    cout<<table[n][k];
 	return table[n][k];
 }
 

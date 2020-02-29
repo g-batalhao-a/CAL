@@ -7,6 +7,7 @@
 
 string calcSum(int* sequence, int size)
 {
+    auto start=std::chrono::high_resolution_clock::now();
     string out="";
 
     int sum[size];
@@ -30,7 +31,8 @@ string calcSum(int* sequence, int size)
         }
         out+=to_string(sum[minIndx])+","+to_string(minIndx)+";";
     }
-
+    auto finish=std::chrono::high_resolution_clock::now();
+    auto mili=chrono::duration_cast<chrono::milliseconds>(finish-start).count();
 	return out;
 }
 
