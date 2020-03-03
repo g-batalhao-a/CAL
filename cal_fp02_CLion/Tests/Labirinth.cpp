@@ -25,8 +25,6 @@ void Labirinth::initializeVisited()
 }
 
 
-
-
 void  Labirinth::printLabirinth()
 {
 	for (int i = 0; i < 10; i++)
@@ -41,7 +39,46 @@ void  Labirinth::printLabirinth()
 
 bool Labirinth::findGoal(int x, int y)
 {
-	return false;
+    initializeVisited();
+    search(x,y);
+    return foundSol;
+}
+
+void Labirinth::search(int x, int y) {
+    // Check if solution already found
+    if(foundSol) {
+        return;
+    }
+
+    // Check if visited
+    if(visited[x][y]) {
+        return;
+    }
+    else {
+        visited[x][y] = true;
+    }
+
+    // Out of Bounds
+    if(x<0 || x>=10 || y<0 || y>=10) {
+        return;
+    }
+
+    // Inside Wall
+    if(labirinth[x][y] == 0) {
+        return;
+    }
+
+    // Found Goal
+    if(labirinth[x][y] == 2) {
+        foundSol = true;
+        return;
+    }
+
+    // Regular labirinth piece
+    search(x+1 , y);
+    search(x-1 , y);
+    search(x , y+1);
+    search(x , y-1);
 }
 
 

@@ -13,9 +13,9 @@ Sudoku::Sudoku()
 }
 
 /**
- * Inicia um Sudoku com um conteúdo inicial.
- * Lança excepção IllegalArgumentException se os valores
- * estiverem fora da gama de 1 a 9 ou se existirem números repetidos
+ * Inicia um Sudoku com um conteï¿½do inicial.
+ * Lanï¿½a excepï¿½ï¿½o IllegalArgumentException se os valores
+ * estiverem fora da gama de 1 a 9 ou se existirem nï¿½meros repetidos
  * por linha, coluna ou bloc 3x3.
  *
  * @param nums matriz com os valores iniciais (0 significa por preencher)
@@ -61,7 +61,7 @@ void Sudoku::initialize()
 }
 
 /**
- * Obtem o conteúdo actual (só para leitura!).
+ * Obtem o conteï¿½do actual (sï¿½ para leitura!).
  */
 int** Sudoku::getNumbers()
 {
@@ -79,7 +79,7 @@ int** Sudoku::getNumbers()
 }
 
 /**
- * Verifica se o Sudoku já está completamente resolvido
+ * Verifica se o Sudoku jï¿½ estï¿½ completamente resolvido
  */
 bool Sudoku::isComplete()
 {
@@ -87,16 +87,59 @@ bool Sudoku::isComplete()
 }
 
 
-
+pair<int,int> Sudoku::nextPos(int currentI , int currentJ) {
+    if (currentI == 8) {
+        return make_pair(0 , currentJ + 1);
+    }
+    else {
+        return make_pair(currentI + 1 ,currentJ);
+    }
+}
 /**
  * Resolve o Sudoku.
- * Retorna indicação de sucesso ou insucesso (sudoku impossível).
+ * Retorna indicaï¿½ï¿½o de sucesso ou insucesso (sudoku impossï¿½vel).
  */
-bool Sudoku::solve()
+bool Sudoku::solve(int i, int j)
 {
-	return false;
-}
+    if(isComplete()||j>8||i>8){
+        return true;
+    }
 
+    pair<int,int> pos;
+
+    if(numbers[i][j]!=0){   //Check if already solved
+        if(i==8 && j==8){
+            return true;
+        }
+        //go to next square
+        pos=nextPos(i,j);
+        return solve(pos.first,pos.second);
+    }
+
+    // Reduction Case
+    for (int n=1 ; n<=9 ; n++){
+        // Check if the number can be here
+        if (block3x3HasNumber[i/3][j/3][n] || columnHasNumber[j][n] || lineHasNumber[i][n]) {
+            continue;
+        }
+        else {
+            marksquare(i,j,n);
+            pos = nextPos(i,j);
+
+            // Check for number success
+            if (solve(pos.first , pos.second)) {
+                return true;
+            }
+                // Check for number insuccess
+            else {
+                unmarksquare(i,j,n);
+                continue;
+            }
+        }
+    }
+    // None of the numbers fit in this square
+    return false;
+}
 
 
 /**
@@ -111,4 +154,32 @@ void Sudoku::print()
 
 		cout << endl;
 	}
+}
+
+void Sudoku::marksquare(int i, int j, int n) {
+    if(i<0||i>8||j<0||j>8||n<0||n>9){
+        return;
+    }
+
+    numbers[i][j]=n;
+    block3x3HasNumber[i/3][j/3][n]= true;
+    columnHasNumber[j][n]=true;
+    lineHasNumber[i][n]= true;
+    countFilled++;
+}
+
+void Sudoku::unmarksquare(int i, int j, int n) {
+    if(i<0||i>8||j<0||j>8||n<0||n>9){
+        return;
+    }
+
+    numbers[i][j]=0;
+    block3x3HasNumber[i/3][j/3][n]= false;
+    columnHasNumber[j][n]=false;
+    lineHasNumber[i][n]= false;
+    countFilled--;
+}
+
+bool Sudoku::solve() {
+    return solve(0,0);
 }

@@ -39,6 +39,7 @@ TEST(CAL_FP02, testSudokuAlreadySolved) {
              {4, 9, 1, 6, 5, 3, 2, 7, 8}};
 
     Sudoku s(in);
+
     EXPECT_EQ(s.solve(), true);
 
     int out[9][9];
@@ -77,6 +78,7 @@ TEST(CAL_FP02, testSudokuNoneBackStepsRequired) {
              {4, 9, 1, 6, 5, 3, 2, 7, 8}};
 
     Sudoku s(in);
+    //s.print();
     EXPECT_EQ(s.solve(), true);
 
     int sout[9][9];
@@ -293,6 +295,7 @@ TEST(CAL_FP02, testLabirinth) {
             {0,0,0,0,0,0,0,0,0,0}};
 
     Labirinth l1(lab1);
+    //l1.printLabirinth();
     EXPECT_EQ(l1.findGoal(1, 1),true);
 
 
