@@ -104,18 +104,13 @@ bool Sudoku::solve(int i, int j)
     if(isComplete()||j>8||i>8){
         return true;
     }
-
     pair<int,int> pos;
-
     if(numbers[i][j]!=0){   //Check if already solved
-        if(i==8 && j==8){
-            return true;
-        }
+        if(i==8 && j==8){return true;}
         //go to next square
         pos=nextPos(i,j);
         return solve(pos.first,pos.second);
     }
-
     // Reduction Case
     for (int n=1 ; n<=9 ; n++){
         // Check if the number can be here
@@ -123,16 +118,13 @@ bool Sudoku::solve(int i, int j)
             continue;
         }
         else {
-            marksquare(i,j,n);
+            checkSquare(i,j,n);
             pos = nextPos(i,j);
-
             // Check for number success
-            if (solve(pos.first , pos.second)) {
-                return true;
-            }
+            if (solve(pos.first , pos.second)) {return true;}
                 // Check for number insuccess
             else {
-                unmarksquare(i,j,n);
+                uncheckSquare(i,j,n);
                 continue;
             }
         }
@@ -156,10 +148,8 @@ void Sudoku::print()
 	}
 }
 
-void Sudoku::marksquare(int i, int j, int n) {
-    if(i<0||i>8||j<0||j>8||n<0||n>9){
-        return;
-    }
+void Sudoku::checkSquare(int i, int j, int n) {
+    if(i<0||i>8||j<0||j>8||n<0||n>9){return;}
 
     numbers[i][j]=n;
     block3x3HasNumber[i/3][j/3][n]= true;
@@ -168,10 +158,8 @@ void Sudoku::marksquare(int i, int j, int n) {
     countFilled++;
 }
 
-void Sudoku::unmarksquare(int i, int j, int n) {
-    if(i<0||i>8||j<0||j>8||n<0||n>9){
-        return;
-    }
+void Sudoku::uncheckSquare(int i, int j, int n) {
+    if(i<0||i>8||j<0||j>8||n<0||n>9){return;}
 
     numbers[i][j]=0;
     block3x3HasNumber[i/3][j/3][n]= false;

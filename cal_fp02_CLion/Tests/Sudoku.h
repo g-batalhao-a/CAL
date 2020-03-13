@@ -76,9 +76,9 @@ public:
 	 */
 	void print();
 
-	void marksquare(int i, int j, int n);
+	void checkSquare(int i, int j, int n);
 
-	void unmarksquare(int i, int j ,int n);
+	void uncheckSquare(int i, int j ,int n);
 };
 
 #endif /* SUDOKU_H_ */

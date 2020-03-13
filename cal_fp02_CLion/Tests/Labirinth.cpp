@@ -46,39 +46,19 @@ bool Labirinth::findGoal(int x, int y)
 
 void Labirinth::search(int x, int y) {
     // Check if solution already found
-    if(foundSol) {
-        return;
-    }
+    if(foundSol) {return;}
 
     // Check if visited
-    if(visited[x][y]) {
-        return;
-    }
-    else {
-        visited[x][y] = true;
-    }
-
+    if(visited[x][y]) {return;}
+    else{visited[x][y] = true;}
     // Out of Bounds
-    if(x<0 || x>=10 || y<0 || y>=10) {
-        return;
-    }
-
+    if(x<0 || x>=10 || y<0 || y>=10) {return;}
     // Inside Wall
-    if(labirinth[x][y] == 0) {
-        return;
-    }
-
+    if(labirinth[x][y] == 0) {return;}
     // Found Goal
-    if(labirinth[x][y] == 2) {
-        foundSol = true;
-        return;
-    }
+    if(labirinth[x][y] == 2) {foundSol = true; return;}
 
-    // Regular labirinth piece
-    search(x+1 , y);
-    search(x-1 , y);
-    search(x , y+1);
-    search(x , y-1);
+    search(x+1 , y);search(x-1 , y);search(x , y+1);search(x , y-1);
 }
 
 
