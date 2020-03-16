@@ -16,10 +16,12 @@ using testing::Eq;
  * Auxiliary function to read points from file to vector.
  */
 void readPoints(string in, vector<Point> &vp){
-    ifstream is (in.c_str());
+    ifstream is(in.c_str());
     vp.clear();
-    if (!is)
+    if (!is) {
+        cout<<"Couldn't open file\n";
         return;
+    }
     while (!is.eof()) {
         double x, y;
         is >> x >> y;
@@ -165,7 +167,7 @@ void testNearestPoints(NP_FUNC func, string alg) {
     int maxTime = 10000;
     if ( testNPFile("Pontos8", 11841.3, func, alg) > maxTime)
         return;
-    /*if ( testNPFile("Pontos64", 556.066, func, alg) > maxTime)
+    if ( testNPFile("Pontos64", 556.066, func, alg) > maxTime)
         return;
     if (testNPFile("Pontos1k", 100.603, func, alg) > maxTime)
         return;
@@ -198,7 +200,7 @@ void testNearestPoints(NP_FUNC func, string alg) {
     if ( testNPRandConstX(0x100000, "Pontos1MConstX",  1.0, func, alg) > maxTime)
         return;
     if ( testNPRandConstX(0x200000, "Pontos2MConstX",  1.0, func, alg) > maxTime)
-        return;*/
+        return;
 }
 
 
@@ -206,7 +208,7 @@ TEST(CAL_FP03, testNP_BF) {
     testNearestPoints(nearestPoints_BF, "Brute force");
 }
 
-/*
+
 TEST(CAL_FP03, testNP_BF_SortedX) {
     testNearestPoints(nearestPoints_BF_SortByX, "Brute force, sorted by x");
 }
@@ -215,7 +217,6 @@ TEST(CAL_FP03, testNP_BF_SortedX) {
 TEST(CAL_FP03, testNP_DC) {
     testNearestPoints(nearestPoints_DC, "Divide and conquer");
 }
-
 
 TEST(CAL_FP03, testNP_DC_2Threads) {
     setNumThreads(2);
@@ -233,6 +234,6 @@ TEST(CAL_FP03, testNP_DC_8Threads) {
     setNumThreads(8);
     testNearestPoints(nearestPoints_DC_MT, "Divide and conquer with 8 threads");
 }
-*/
+
 
 

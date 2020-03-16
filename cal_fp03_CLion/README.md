@@ -1,0 +1,1 @@
+Must add "Pontosx" files to cmake_build_debug folder to run properly

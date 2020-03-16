@@ -42,26 +42,17 @@ static void sortByY(vector<Point> &v, int left, int right)
  * Brute force algorithm O(N^2).
  */
 Result nearestPoints_BF(vector<Point> &vp) {
-    cout<<"\n"<<vp.size()<<"\n";
-    Point p1=Point(0,0); Point p2=Point(0,0);
-	Result res= Result(INT_MAX,p1,p2);
-	int distance=0;
-	for(int  i=0;i<vp.size();i++){
-	    for(int j =0; j<vp.size();j++){
-	        if(i==j)
-                continue;
-	        else{
-	            distance=vp[i].distance(vp[j]);
-	            if(distance<=res.dmin){
-	                res.p1=vp[i];
-	                res.p2=vp[j];
-	                res.dmin=distance;
-	            }
-	        }
+	Result res;
+	for(int x=0;x<vp.size();x++){
+	    for(int y=x+1;y<vp.size();y++){
+            double dist=vp[x].distance(vp[y]);
+            if(dist<res.dmin){
+                res.p1=vp[x];
+                res.p2=vp[y];
+                res.dmin=dist;
+            }
 	    }
 	}
-
-	// TODO
 	return res;
 }
 
@@ -71,7 +62,17 @@ Result nearestPoints_BF(vector<Point> &vp) {
 Result nearestPoints_BF_SortByX(vector<Point> &vp) {
 	Result res;
 	sortByX(vp, 0, vp.size()-1);
-	// TODO
+	// DONE
+    for(int x=0;x<vp.size();x++){
+        for(int y=x+1;y<vp.size();y++){
+            double dist=vp[x].distance(vp[y]);
+            if(dist<res.dmin){
+                res.p1=vp[x];
+                res.p2=vp[y];
+                res.dmin=dist;
+            }
+        }
+    }
 	return res;
 }
 
@@ -82,9 +83,21 @@ Result nearestPoints_BF_SortByX(vector<Point> &vp) {
  * The strip is the part of vp between indices left and right (inclusive).
  * "res" contains initially the best solution found so far.
  */
-static void npByY(vector<Point> &vp, int left, int right, Result &res)
-{
-	// TODO
+static void npByY(vector<Point> &vp, int left, int right, Result &res){
+    double dist;
+    for(int i=left;i<right+1;i++){
+        for(int j=i+1;j<right+1;j++){
+            dist=vp[i].distance(vp[j]);
+            if(abs(vp[i].y-vp[j].y)>res.dmin)
+                break;
+            else if(dist<res.dmin){
+                res.dmin=dist;
+                res.p1=vp[i];
+                res.p2=vp[j];
+            }
+        }
+    }
+	// DONE (Explained in the end of the handout)
 }
 
 /**
@@ -94,31 +107,75 @@ static void npByY(vector<Point> &vp, int left, int right, Result &res)
  */
 static Result np_DC(vector<Point> &vp, int left, int right, int numThreads) {
 	// Base case of two points
-	// TODO
+	if(right-left==1){
+        return Result(vp[left].distance(vp[right]),vp[left],vp[right]);
+	}
+	// DONE
 
 	// Base case of a single point: no solution, so distance is MAX_DOUBLE
-	// TODO
+	if(right-left==0){
+        return Result(MAX_DOUBLE,vp[left],vp[left]);
+	}
+	// DONE
 
 	// Divide in halves (left and right) and solve them recursively,
+    Result left_half, right_half;
+	int mid = (left+right)/2;
+	if(numThreads<=1){
+        left_half=np_DC(vp,left,mid,numThreads);
+        right_half= np_DC(vp,mid+1,right,numThreads);
+	}
 	// possibly in parallel (in case numThreads > 1)
-	// TODO
+	else if(numThreads>1){
+
+	    std::thread t ([&vp,&left_half,left,mid,numThreads]{
+	        vector<Point> v2(vp);
+	        left_half=np_DC(v2,left,mid,numThreads/2);
+	    });
+	    right_half= np_DC(vp,mid+1,right,numThreads/2);
+	    t.join();
+	}
+	// DONE
 
 	// Select the best solution from left and right
-	// TODO
+	Result res;
+	if(left_half.dmin<right_half.dmin)
+	    res=left_half;
+    else
+        res=right_half;
+	// DONE
 
 	// Determine the strip area around middle point
-	// TODO
+	mid=(vp[right].x+vp[left].x)/2;
+	int str_left = mid-res.dmin;
+	int str_right = mid+res.dmin;
+	// DONE (check end of handout)
 
 	// Order points in strip area by Y coordinate
-	// TODO
+    int str_left_i=left;
+    int str_right_i=right;
+
+    for(int i=left;i<right;i++){
+        if(vp[i].x<str_left)
+            str_left_i=i;
+        if(vp[i].x>str_right){
+            str_right_i=i-1;
+            break;
+        }
+    }
+
+    sortByY(vp,str_left_i,str_right_i);
+	// DONE
 
 	// Calculate nearest points in strip area (using npByY function)
-	// TODO
+	npByY(vp,str_left_i,str_right_i,res);
+	// DONE (Check end of handout for explanation on this function)
 
 	// Reorder points in strip area back by X coordinate
-	//TODO
+	sortByX(vp,str_left_i,str_right_i);
+	//DONE
 
-	//return res;
+	return res;
 }
 
 
