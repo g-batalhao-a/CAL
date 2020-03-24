@@ -34,7 +34,6 @@ Graph<int> CreateTestGraph() {
     myGraph.addEdge(5, 7, 2);
     myGraph.addEdge(6, 4, 3);
     myGraph.addEdge(7, 6, 4);
-
     return myGraph;
 }
 

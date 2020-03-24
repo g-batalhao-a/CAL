@@ -100,7 +100,6 @@ Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
 template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
-
 public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in);
@@ -109,10 +108,10 @@ public:
 	vector<Vertex<T> *> getVertexSet() const;
 
 	// Fp05 - single source
-	void unweightedShortestPath(const T &s);    //TODO...
-	void dijkstraShortestPath(const T &s);      //TODO...
-	void bellmanFordShortestPath(const T &s);   //TODO...
-	vector<T> getPathTo(const T &dest) const;   //TODO...
+	void unweightedShortestPath(const T &s);    //DONE...
+	void dijkstraShortestPath(const T &s);      //DONE...
+	void bellmanFordShortestPath(const T &s);   //DONE...
+	vector<T> getPathTo(const T &dest) const;   //DONE...
 
 	// Fp05 - all pairs
 	void floydWarshallShortestPath();   //TODO...
@@ -254,7 +253,7 @@ void Graph<T>::bellmanFordShortestPath(const T &orig) {
             }
         }
     }
-	// TODO
+	// DONE
 }
 
 
@@ -279,6 +278,7 @@ vector<T> Graph<T>::getPathTo(const T &dest) const{
 
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
+
 	// TODO
 }
 
@@ -288,6 +288,7 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 	// TODO
 	return res;
 }
+
 
 
 #endif /* GRAPH_H_ */
