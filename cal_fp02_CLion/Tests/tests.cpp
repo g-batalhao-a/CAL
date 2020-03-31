@@ -200,6 +200,27 @@ TEST(CAL_FP02, testSudokuWithMinimalClues) {
     sout[i][a] = res[i][a];
 
     compareSudokus(out, sout);
+
+    int inr[9][9] =
+            {{0, 0, 0, 6, 5, 9, 0, 0, 0},
+             {0, 0, 4, 0, 0, 0, 2, 0, 0},
+             {6, 0, 0, 0, 0, 0, 0, 0, 8},
+             {4, 8, 0, 0, 9, 0, 0, 5, 2},
+             {9, 0, 5, 2, 0, 8, 4, 0, 6},
+             {1, 2, 0, 0, 3, 0, 0, 7, 9},
+             {2, 0, 0, 0, 0, 0, 0, 0, 5},
+             {0, 0, 1, 0, 0, 0, 6, 0, 0},
+             {0, 0, 0, 5, 4, 3, 0, 0, 0}};
+    Sudoku s1(inr);
+    s1.solve();
+    int** res1 = s1.getNumbers();
+    for (int i = 0; i < 9; i++){
+        for (int a = 0; a < 9; a++){
+            cout<<res1[i][a]<<" ";
+        }
+        cout<<"\n";
+    }
+
 }
 
 

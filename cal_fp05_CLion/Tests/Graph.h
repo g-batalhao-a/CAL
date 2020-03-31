@@ -100,12 +100,16 @@ Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
 template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
+
+    vector<vector<double>> dist;
+    vector<vector<Vertex<T>*>> pred;
 public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in);
 	bool addEdge(const T &sourc, const T &dest, double w);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
+
 
 	// Fp05 - single source
 	void unweightedShortestPath(const T &s);    //DONE...
@@ -278,15 +282,102 @@ vector<T> Graph<T>::getPathTo(const T &dest) const{
 
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
+    // TODO
+    dist.clear();
+    dist = vector<vector<double>>(vertexSet.size(), vector<double>(vertexSet.size(), INT64_MAX));
+    pred.clear();
+    pred = vector<vector<Vertex<T>*>>(vertexSet.size(), vector<Vertex<T>*>(vertexSet.size(), NULL));
 
-	// TODO
+    // Build dist matrix
+    int i = 0, j = 0;
+    for (auto v1 : vertexSet) {
+        for (auto v2 : vertexSet) {
+            if (i == j) {
+                dist[i][j] = 0;
+                pred[i][j] = v1;
+            }
+            else
+                for (Edge<T> edge: v1->adj)
+                    if (edge.dest->info == v2->info) {
+                        dist[i][j] = edge.weight;
+                        pred[i][j] = v1;
+                    }
+            j++;
+        }
+        i++;
+        j = 0;
+    }
+
+
+    // Print Dist Matrix
+    /*for (auto row : dist) {
+        for (auto x : row) {
+            cout << x << "\t";
+        }
+        cout << endl;
+    }*/
+
+    for (int k = 0; k < vertexSet.size(); k++) {
+        int i = 0, j = 0;
+        for (auto v1 : vertexSet) {
+            for (auto v2 : vertexSet) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                    pred[i][j] = pred[k][j];
+                }
+                j++;
+            }
+            i++;
+            j = 0;
+        }
+    }
+
+    for (auto row : dist) {
+        for (auto x : row) {
+            cout << x << "\t";
+        }
+        cout << endl;
+    }
+    cout << endl << endl;
+    for (auto row : pred) {
+        for (auto x : row) {
+            if (x != NULL)
+                cout << x->getInfo() << "\t";
+            else
+                cout << "NULL\t";
+        }
+        cout << endl;
+    }
 }
 
 template<class T>
 vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
-	vector<T> res;
-	// TODO
-	return res;
+    vector<T> res;
+    // TODO
+    int srcIndex, destIndex, i = 0;
+
+    for (auto x : vertexSet) {
+        if (x->info == orig)
+            srcIndex = i;
+        else if (x->info == dest)
+            destIndex = i;
+        i++;
+    }
+
+    while (pred[srcIndex][destIndex] != vertexSet[srcIndex]) {
+        res.insert(res.begin(), pred[srcIndex][destIndex]->info);
+        i = 0;
+        for (auto x : vertexSet) {
+            if (x->info == pred[srcIndex][destIndex]->info)
+                destIndex = i;
+            i++;
+        }
+    }
+
+    res.insert(res.begin(), orig);
+    res.push_back(dest);
+
+    return res;
 }
 
 
