@@ -1,0 +1,12 @@
+Tribunal
+1
+18
+Esquadra
+1
+64
+GNR
+1
+192
+Quartel
+1
+185

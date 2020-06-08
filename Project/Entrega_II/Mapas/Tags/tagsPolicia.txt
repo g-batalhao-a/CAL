@@ -1,0 +1,42 @@
+GNR - Unidade de Controlo Costeiro
+16651
+Unidade de Policia Tecnica
+22579
+GNR - Brigada Fiscal do Porto
+24799
+GNR - Comando Territorial do Porto
+38816
+Policia Maritima
+16783
+PSP - 9a Esquadra
+42107
+Capitania do Douro
+50752
+Comando Metropolitano do Porto
+12245
+PSP
+17501
+Porto Tourism Police Department
+53152
+PSP - 11a Esquadra
+16996
+PSP - Divisão de Transito
+25596
+PSP - 3a Esquadra (Bonfim)
+39728
+Policia
+7687
+Quartel da Bela Vista
+23892
+PSP - 6a Esquadra (Antas) 
+21947
+Policia Judiciaria
+50938
+PSP - 7a Esquadra
+52539
+PSP - Esquadra do Bom Pastor
+238
+PSP - 13a Esquadra
+17512
+PSP - 18a Esquadra
+40775
